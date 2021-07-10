@@ -13,7 +13,11 @@ const sanitizeRedisUrl = (url) => url.replace(/^(redis\:\/\/)/, "");
 // });
 const endpointUri = sanitizeRedisUrl(REDIS_ENDPOINT_URI);
 const password = REDIS_PASSWORD;
-const redisClient = redis.createClient(`redis://${endpointUri}`, { password });
+const redis_client = redis.createClient({
+  url: `redis://${endpointUri}`,
+  password,
+});
+// console.log(process.env.REDIS_PASSWORD);
 
 redis_client.on("connect", function () {
   console.log("redis client connected");
