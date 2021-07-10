@@ -56,13 +56,13 @@ axios.interceptors.response.use(
         if (err.response.status === 401) {
           // refresh token expired
           if (localStorage.getItem("user")) localStorage.removeItem("user");
-          window.location.href = "/login";
+          window.location.href = "/signin";
         }
       }
     } else {
       if (localStorage.getItem("user")) localStorage.removeItem("user");
 
-      window.location.href = "/login";
+      window.location.href = "/signin";
     }
   }
 );

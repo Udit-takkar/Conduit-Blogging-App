@@ -61,7 +61,7 @@ function Settings() {
       history.push("/");
     } catch (err) {
       if (err.response.status === 403 || err.response.status === 401) {
-        window.location.href = "/login";
+        window.location.href = "/signin";
       }
     }
   };
