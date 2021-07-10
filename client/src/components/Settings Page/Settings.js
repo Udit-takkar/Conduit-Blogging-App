@@ -20,6 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { API_DELETE_LOGOUT } from "../../constants/api";
 
 function Settings() {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ function Settings() {
     try {
       await dispatch(logoutUser());
       localStorage.removeItem("user");
-      const res = await axios.delete("/logout");
+      const res = await axios.delete(API_DELETE_LOGOUT);
       history.push("/");
     } catch (err) {
       if (err.response.status === 403 || err.response.status === 401) {
