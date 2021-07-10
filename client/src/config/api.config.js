@@ -1,7 +1,9 @@
 import Axios from "axios";
 import { API_BASE_URL } from "../constants/api";
 import myLog from "../utils/myLog";
+import { useHistory } from "react-router-dom";
 
+// const history = use;
 const axios = Axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -54,13 +56,13 @@ axios.interceptors.response.use(
         if (err.response.status === 401) {
           // refresh token expired
           if (localStorage.getItem("user")) localStorage.removeItem("user");
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = "/login";
         }
       }
     } else {
       if (localStorage.getItem("user")) localStorage.removeItem("user");
 
-      window.location.href = "http://localhost:3000/login";
+      window.location.href = "/login";
     }
   }
 );
