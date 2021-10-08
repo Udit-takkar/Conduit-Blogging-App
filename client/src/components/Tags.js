@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import uuid from "react-uuid";
 import styled from "styled-components";
 import { fetchArticlesByTag } from "../features/articles/articleSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { getTags } from "../ApiEndpoints/tags";
+import { useDispatch } from "react-redux";
+import { getTags } from "../services/tags";
 import { useHistory } from "react-router-dom";
 require("dotenv").config();
 
@@ -39,7 +38,7 @@ function Tags() {
             <TagsList
               onClick={() => {
                 dispatch(fetchArticlesByTag({ page: 1, tag }));
-                history.push(`/${tag.trim()}/?page=1`);
+                history.push(`/tag/${tag.trim()}?page=1`);
               }}
               key={uuid()}
             >

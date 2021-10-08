@@ -14,9 +14,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Redirect, Link, useHistory } from "react-router-dom";
-import { CheckFollowing } from "../../ApiEndpoints/profiles";
-import { Follow } from "../../ApiEndpoints/profiles";
-import { UnFollow } from "../../ApiEndpoints/profiles";
+import { CheckFollowing } from "../../services/profiles";
+import { Follow } from "../../services/profiles";
+import { UnFollow } from "../../services/profiles";
 
 function ProfileBanner({ username, LoggedInUsername }) {
   console.log(LoggedInUsername, username);
