@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import LottieAnimation from "./Lottie";
-import grape from "../../Animations/drawkit-grape-animation-5-LOOP.json";
+import grape from "../../assets/drawkit-grape-animation-5-LOOP.json";
 
 function Banner() {
   return (

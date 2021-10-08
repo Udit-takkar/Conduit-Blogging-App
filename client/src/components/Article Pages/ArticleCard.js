@@ -3,13 +3,12 @@ import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { MarkFavourite } from "../../ApiEndpoints/articles";
-import { getArticleBySlug } from "../../ApiEndpoints/articles";
-import { MarkUnFavourite } from "../../ApiEndpoints/articles";
-import { isFavourite } from "../../ApiEndpoints/articles";
+import { MarkFavourite } from "../../services/articles";
+import { getArticleBySlug } from "../../services/articles";
+import { MarkUnFavourite } from "../../services/articles";
+import { isFavourite } from "../../services/articles";
 import { isUserLoggedIn } from "../../features/authentication/signup";
 import { useSelector } from "react-redux";
-import Skeleton from "react-loading-skeleton";
 
 function ArticleCard({
   username,

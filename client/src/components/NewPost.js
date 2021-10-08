@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { postArticle } from "../ApiEndpoints/articles";
+import { postArticle } from "../services/articles";
 import { Redirect, useHistory } from "react-router-dom";
 import { getUsername } from "../features/authentication/signup";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { updateArticle } from "../ApiEndpoints/articles";
+import { updateArticle } from "../services/articles";
 import { MdTitle } from "react-icons/md";
 import Yamde from "yamde";
 import {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { getArticleBySlug } from "../../ApiEndpoints/articles";
+import { getArticleBySlug } from "../../services/articles";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Comments from "./Comments";
@@ -10,9 +10,9 @@ import {
   getUsername,
 } from "../../features/authentication/signup";
 import { useSelector } from "react-redux";
-import { deleteArticle } from "../../ApiEndpoints/articles";
+import { deleteArticle } from "../../services/articles";
 import { useHistory } from "react-router-dom";
-import { postComment } from "../../ApiEndpoints/articles";
+import { postComment } from "../../services/articles";
 import Loader from "react-loader-spinner";
 import ReactMarkdown from "react-markdown";
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUser, registerUser, loginUser } from "../../ApiEndpoints/user";
+import { updateUser, registerUser, loginUser } from "../../services/user";
 
 let initialState = {
   loading: false,

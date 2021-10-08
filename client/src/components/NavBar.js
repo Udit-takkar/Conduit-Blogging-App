@@ -8,7 +8,7 @@ import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 
-function Header() {
+function NavBar() {
   const history = useHistory();
   const isLoggedIn = useSelector(isUserLoggedIn);
   const username = useSelector(getUsername);
@@ -19,7 +19,7 @@ function Header() {
     <HeaderContainer>
       <h2 onClick={goToHome}>conduit</h2>
       <HeaderLinks>
-        <Link to="/global/?page=1" style={linkStyle}>
+        <Link to="/globalfeed" style={linkStyle}>
           Home
         </Link>
 
@@ -80,4 +80,4 @@ const linkStyle = {
   textDecoration: "none",
   color: "rgba(0,0,0,.3)",
 };
-export default Header;
+export default NavBar;

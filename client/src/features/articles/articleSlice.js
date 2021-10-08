@@ -6,28 +6,29 @@ const initialState = {
   error: null,
   articles: [],
   articlesCount: 0,
-  navItems: ["Your Feed", "Global Feed"],
+  navItems: ["Global Feed", "Your Feed"],
   activeItem: "Global Feed",
 };
 
 export const fetchFeedArticles = createAsyncThunk(
   "articles/feed",
-  async (page, { getState }) => {
+  async ({ page }, { getState }) => {
     try {
+      console.log("page", page);
       const response = await axios.get(
         `/articles/feed?limit=10&offset=${(page - 1) * 10}`
       );
-
+      console.log(response);
       return response.data;
     } catch (e) {
-      console.log(e.response);
+      console.log(e);
       return e;
     }
   }
 );
 export const fetchGlobalArticles = createAsyncThunk(
   "articles/global",
-  async (page, { getState }) => {
+  async ({ page }, { getState }) => {
     console.log(getState());
     try {
       console.log("Fetch global");
@@ -72,7 +73,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Your Feed",
       });
     },
@@ -82,7 +83,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Your Feed",
       });
     },
@@ -92,7 +93,7 @@ export const articleSlice = createSlice({
         error: action.error,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Your Feed",
       });
     },
@@ -103,7 +104,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Global Feed",
       });
     },
@@ -113,7 +114,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Global Feed",
       });
     },
@@ -124,7 +125,7 @@ export const articleSlice = createSlice({
         error: action.error,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Global Feed",
       });
     },
@@ -135,14 +136,13 @@ export const articleSlice = createSlice({
         error: null,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems.slice(0, 2),
         activeItem: "Global Feed",
       });
     },
     [fetchArticlesByTag.fulfilled]: (state, action) => {
-      let updateNavItems = state.navItems;
-
-      updateNavItems[2] = action.meta.arg.tag; //Just replace it with new tag
+      // let updateNavItems = state.navItems;
+      // updateNavItems[2] = action.meta.arg.tag; //Just replace it with new tag
 
       console.log(action);
       Object.assign(state, {
@@ -150,7 +150,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount,
-        navItems: updateNavItems,
+        navItems: [...state.navItems.slice(0, 2), action.meta.arg.tag],
         activeItem: action.meta.arg.tag,
       });
     },
@@ -161,7 +161,7 @@ export const articleSlice = createSlice({
         error: null,
         articles: [],
         articlesCount: 0,
-        navItems: ["Your Feed", "Global Feed"],
+        navItems: state.navItems,
         activeItem: "Global Feed",
       });
     },

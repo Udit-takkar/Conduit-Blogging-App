@@ -4,11 +4,10 @@ import ProfileBanner from "../Banners/ProfileBanner";
 import ArticleCard from "../Article Pages/ArticleCard";
 import { getUsername } from "../../features/authentication/signup";
 import { useSelector } from "react-redux";
-import { myArticles } from "../../ApiEndpoints/articles";
-import { Favourite } from "../../ApiEndpoints/articles";
+import { myArticles } from "../../services/articles";
+import { Favourite } from "../../services/articles";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import Pagination from "../Article Pages/Pagination";
-import Skeleton from "react-loading-skeleton";
 import Loader from "react-loader-spinner";
 import queryString from "query-string";
 

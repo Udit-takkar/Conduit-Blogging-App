@@ -9,7 +9,7 @@ import {
   error,
 } from "../../features/authentication/signup";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../../ApiEndpoints/user";
+import { updateUser } from "../../services/user";
 import { useHistory } from "react-router-dom";
 import { logoutUser } from "../../features/authentication/signup";
 import {
