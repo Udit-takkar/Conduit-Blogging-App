@@ -100,7 +100,7 @@ function ArticleDisplay() {
     setComment({ ...comment, [e.target.name]: e.target.value });
   };
   return (
-    <>
+    <ArticleContainer>
       <ArticleBanner>
         {isLoading === true ? (
           <Loader
@@ -181,9 +181,16 @@ function ArticleDisplay() {
         </ButtonBox>
       </CommentBox>
       <Comments slug={slug} Loading={comment.Loading} />
-    </>
+    </ArticleContainer>
   );
 }
+
+const ArticleContainer = styled.div`
+  margin-bottom: 100px;
+  max-width: 100vw;
+  overflow-x: hidden;
+`;
+
 const ArticleBanner = styled.div`
   background: #333;
   color: white;
@@ -197,6 +204,7 @@ const CommentBox = styled.div`
   display: flex;
   flex-direction: column;
   place-items: center;
+  margin-bottom: 50px;
   > textarea {
     min-width: 550px;
     min-height: 20vh;

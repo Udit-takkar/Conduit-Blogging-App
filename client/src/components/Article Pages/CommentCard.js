@@ -13,8 +13,8 @@ function CommentCard({ username, image, body, createdAt, id, deleteComment }) {
       <UserBox>
         <div>
           <img src={image} alt="avatar" />
-          <p>{username}</p>
-          <p style={{ marginLeft: "20px" }}>{createdAt}</p>
+          <h3>{username}</h3>
+          <h3>{createdAt}</h3>
         </div>
 
         {loggedInUsername === username ? (
@@ -28,36 +28,41 @@ function CommentCard({ username, image, body, createdAt, id, deleteComment }) {
 }
 const Card = styled.div`
   margin-top: 20px;
+  width: 100%;
+  max-width: 35em;
 `;
 const TextBox = styled.div`
   padding: 20px;
-  min-width: 40vw;
-  min-height: 15vh;
+  height: 30em;
+  max-height: 120px;
   border: 1px solid #e5e5e5;
 `;
+
 const UserBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid #e5e5e5;
   box-shadow: none !important;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 300;
-  padding: 0.75rem 1.35rem;
+  padding: 0.75em 1.35em;
   background-color: #f5f5f5;
-  min-width: 46vw;
-  max-height: 2vh;
+  min-width: 40%;
+  max-height: 5%;
   box-shadow: none !important;
   > div {
     display: flex;
     align-items: center;
+    > h3 {
+      font-size: 1.25em;
+      margin-bottom: 0;
+      margin-left: 5px;
+    }
     > img {
       height: 20px;
       width: 20px;
       border-radius: 30px;
-    }
-    > p {
-      margin-left: 5px;
     }
   }
   > button {

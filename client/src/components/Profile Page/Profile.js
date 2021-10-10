@@ -19,9 +19,9 @@ function Profile() {
   if (page === undefined) page = 1;
 
   const LoggedInUsername = useSelector(getUsername);
-  // console.log(LoggedInUsername, username);
 
   const fetchMyArticles = async (page) => {
+    setLoading(true);
     const data = await myArticles(page, username);
     setArticles(data.articles);
     setArticlesCount(data.articlesCount);
@@ -29,6 +29,7 @@ function Profile() {
   };
 
   const fetchFavouriteArticles = async (page) => {
+    setLoading(true);
     const data = await Favourite(page, username);
     setArticles(data.articles);
     setArticlesCount(data.articlesCount);
@@ -79,47 +80,45 @@ function Profile() {
               history.push({ search: "?page=1" });
             }}
           >
-            Favourite Articles
+            <p> Favourite Articles</p>
           </button>
         </NavBar>
         <ArticlesContainer>
-          {articlesCount === 0 ? (
+          {isLoading === true && (
+            <Loader
+              type="TailSpin"
+              color="#5cb85c"
+              height={80}
+              width={80}
+              style={{ marginTop: "50px" }}
+            />
+          )}
+          {!isLoading && (
             <>
-              {isLoading === true ? (
-                <Loader
-                  type="TailSpin"
-                  color="#5cb85c"
-                  height={80}
-                  width={80}
-                  style={{ marginTop: "50px" }}
-                />
-              ) : (
-                <p>No articles are here... yet.</p>
-              )}
-            </>
-          ) : (
-            articles.map((article) => {
-              const {
-                author: { username, image },
-                title,
-                description,
-                createdAt,
-                favoritesCount,
-              } = article;
+              {articlesCount === 0 && <p>No articles are here... yet.</p>}
+              {articles.map((article) => {
+                const {
+                  author: { username, image },
+                  title,
+                  description,
+                  createdAt,
+                  favoritesCount,
+                } = article;
 
-              return (
-                <ArticleCard
-                  key={article.slug}
-                  username={username}
-                  image={image}
-                  title={title}
-                  description={description}
-                  createdAt={createdAt}
-                  slug={article.slug}
-                  favoritesCount={favoritesCount}
-                />
-              );
-            })
+                return (
+                  <ArticleCard
+                    key={article.slug}
+                    username={username}
+                    image={image}
+                    title={title}
+                    description={description}
+                    createdAt={createdAt}
+                    slug={article.slug}
+                    favoritesCount={favoritesCount}
+                  />
+                );
+              })}
+            </>
           )}
         </ArticlesContainer>
         <Pagination
@@ -141,15 +140,14 @@ const ProfileArticles = styled.div`
 `;
 const NavBar = styled.div`
   display: flex;
-
-  margin-top: 2rem;
-  margin-left: 20vw;
+  align-items: center;
+  margin-top: 2em;
+  margin-left: 20%;
   align-self: flex-start;
   color: #aaa;
   > button {
     display: inline-block;
     border: none;
-
     outline: none;
     background-color: white;
     margin-right: 5px;

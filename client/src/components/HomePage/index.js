@@ -13,7 +13,7 @@ import Loader from "react-loader-spinner";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { useHistory, useParams } from "react-router-dom";
-import HomeTabs from "../HomeTabs";
+import HomeTabs from "./HomeTabs";
 
 function App({ isLoggedIn, activeItem, getPageArticles }) {
   const dispatch = useDispatch();
@@ -107,6 +107,7 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
 const HomePageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 75px;
 `;
 const AppContainer = styled.div`
   display: flex;

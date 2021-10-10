@@ -9,7 +9,6 @@ import {
   error,
 } from "../../features/authentication/signup";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../../services/user";
 import { useHistory } from "react-router-dom";
 import { logoutUser } from "../../features/authentication/signup";
 import {
@@ -140,12 +139,13 @@ const InputBox = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   padding-left: 20px;
   margin-top: 10px;
+  min-width: 50%;
   > input {
     padding: 0.75rem 1.5rem;
     border: none;
     margin-top: 10px;
-    min-width: 40vw;
     font-family: "poppins";
+    width: 100%;
     :focus {
       outline: none;
     }
@@ -157,7 +157,6 @@ const SettingsContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  // max-width: fit-content;
   margin-top: 30px;
   > h3 {
     font-size: 30px;
@@ -168,17 +167,15 @@ const SettingsContainer = styled.div`
     border-radius: 0.3rem;
     border: 1px solid rgba(0, 0, 0, 0.15);
     margin-top: 10px;
-    min-width: 42vw;
-    min-height: 20vh;
+    min-width: 50%;
+    min-height: 120px;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  // place-items: center;
   align-items: center;
   justify-content: space-around;
-  // min-width: 60vw;
 
   > button {
     border: none;
@@ -198,7 +195,6 @@ const logoutBtn = {
   padding: "0.75rem 1.5rem",
   fontSize: " 1.25rem",
   borderRadius: "0.3rem",
-  // color: #fff;
   color: "#b85c5c",
   backgroundImage: "none",
   backgroundColor: "transparent",

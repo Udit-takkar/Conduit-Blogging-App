@@ -1,8 +1,8 @@
 import React from "react";
-import { navItems } from "../features/articles/articleSlice";
+import { navItems } from "../../features/articles/articleSlice";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { MY_FEED } from "../constants/TabItem";
+import { MY_FEED } from "../../constants/TabItem";
 
 function HomeTabs({ getActiveItem, handleNavItemClick, isLoggedIn }) {
   let NavItems = useSelector(navItems);
