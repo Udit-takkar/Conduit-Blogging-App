@@ -43,7 +43,7 @@ function SignIn() {
         validationError: PASSWORD_ERROR,
       });
       return;
-    } else if (!validator.validate(formState.password)) {
+    } else if (!validator.validate(formState.email)) {
       setFormState({
         ...formState,
         validationError: EMAIL_ERROR,
