@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Conduit</h1>
+    <h1>Conduit - A Blogging App</h1>
 
 [Live Demo Link](https://conduit-udit.herokuapp.com/)
 
@@ -65,3 +65,39 @@
 - Redis
 - Node
 - Express
+
+
+## :rocket: Local Development
+
+#### Step-1
+
+Clone this repo
+
+```sh
+https://github.com/Udit-takkar/Conduit-Blogging-App.git
+```
+
+#### Step-2
+
+Install all dependencies
+
+```sh
+npm install
+cd client
+npm install
+```
+
+#### Step-3
+
+```sh
+npm run dev ## In the root folder
+npm start.  ## In client folder
+```
+
+## Contributing
+
+Box Chat is an open source project. Feel free to contribute and suggest any improvements. All bugs and issues should be reported to the [issues](https://github.com/Udit-takkar/Conduit-Blogging-App/issues) tab.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
