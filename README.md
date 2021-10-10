@@ -96,7 +96,7 @@ npm start.  ## In client folder
 
 ## Contributing
 
-Box Chat is an open source project. Feel free to contribute and suggest any improvements. All bugs and issues should be reported to the [issues](https://github.com/Udit-takkar/Conduit-Blogging-App/issues) tab.
+Conduit is an open source project. Feel free to contribute and suggest any improvements. All bugs and issues should be reported to the [issues](https://github.com/Udit-takkar/Conduit-Blogging-App/issues) tab.
 
 ## License
 
