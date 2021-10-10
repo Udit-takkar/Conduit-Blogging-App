@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { login } from "../../features/authentication/signup";
-import { Link, Redirect } from "react-router-dom";
+import { login } from "../../features/authentication/authSlice.js";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isLoading,
   isUserLoggedIn,
   error,
-} from "../../features/authentication/signup";
+} from "../../features/authentication/authSlice.js";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router-dom";
 import SignInIllustration from "../../assets/auth_green.svg";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PASSWORD_ERROR, EMAIL_ERROR } from "../../constants/AuthErrors";
+
+var validator = require("email-validator");
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -20,23 +21,48 @@ function SignIn() {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
+    validationError: "",
   });
+
   const isLoggedIn = useSelector(isUserLoggedIn);
   const err = useSelector(error);
   const loading = useSelector(isLoading);
   const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    setFormState({
+      ...formState,
+      validationError: "",
+      [e.target.name]: e.target.value,
+    });
   };
-  // const [err, setErr] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formState.password.length < 6) {
+      setFormState({
+        ...formState,
+        validationError: PASSWORD_ERROR,
+      });
+      return;
+    } else if (!validator.validate(formState.password)) {
+      setFormState({
+        ...formState,
+        validationError: EMAIL_ERROR,
+      });
+      return;
+    }
 
-    const res = await dispatch(login(formState));
+    await dispatch(login(formState))
+      .then((res) => {
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
     if (isLoggedIn === true) history.push("/");
-  });
+  }, []);
 
   return (
     <>
@@ -57,12 +83,10 @@ function SignIn() {
                 />
               )}
             </LoadingSpin>
-
             <h3>Log Into Condult</h3>
             <Link to="/signup" style={needaccount}>
               Need a account
             </Link>
-
             <input
               name="email"
               onChange={handleChange}
@@ -71,7 +95,6 @@ function SignIn() {
               placeholder="Email"
               required
             />
-
             <input
               name="password"
               onChange={handleChange}
@@ -93,9 +116,18 @@ function SignIn() {
                 })}
               </>
             )}
-            <button onChange={handleChange} onClick={handleSubmit}>
-              Sign In
-            </button>
+            {formState.validationError && (
+              <h1
+                style={{
+                  color: "#ff0033",
+                  fontWeight: 500,
+                  fontSize: "0.95em",
+                }}
+              >
+                {formState.validationError}
+              </h1>
+            )}
+            <button onClick={handleSubmit}>Sign In</button>
           </SignInForm>
         </SignInContainer>
       </PageContainer>
@@ -107,7 +139,6 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-
   height: calc(100vh - 70px);
 `;
 const SignInContainer = styled.div`

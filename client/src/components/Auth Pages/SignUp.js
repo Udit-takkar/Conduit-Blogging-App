@@ -1,29 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signup } from "../../features/authentication/signup";
+import { signup } from "../../features/authentication/authSlice.js";
 import {
   isLoading,
   isUserLoggedIn,
   error,
-} from "../../features/authentication/signup";
+} from "../../features/authentication/authSlice.js";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router-dom";
 import SignInIllustration from "../../assets/auth_green.svg";
+import {
+  EMAIL_ERROR,
+  USERNAME_ERROR,
+  PASSWORD_EMPTY,
+} from "../../constants/AuthErrors";
+
+var validator = require("email-validator");
 
 function SignUp() {
+  const validUsername = new RegExp("/^[a-zA-Z0-9]{3,}$/");
   const dispatch = useDispatch();
   const history = useHistory();
   const [formState, setFormState] = useState({
     username: "",
     email: "",
     password: "",
+    validationError: "",
   });
   let btnRef = useRef();
 
-  const [isDisabled, setIsDisabled] = useState(false);
   const loading = useSelector(isLoading);
   const isLoggedIn = useSelector(isUserLoggedIn);
   const checkError = useSelector(error);
@@ -32,17 +39,43 @@ function SignUp() {
     if (isLoggedIn === true) {
       history.push("/");
     }
-  });
+  }, []);
 
   const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    console.log(formState);
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value,
+      validationError: "",
+    });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validator.validate(formState.email)) {
+      setFormState({
+        ...formState,
+        validationError: EMAIL_ERROR,
+      });
+      return;
+    } else if (!validUsername.test(formState.username)) {
+      setFormState({ ...formState, validationError: USERNAME_ERROR });
+      return;
+    } else if (formState.password.trim.length === 0) {
+      setFormState({ ...formState, validationError: PASSWORD_EMPTY });
+      return;
+    }
+
     if (btnRef.current) {
       btnRef.current.setAttribute("disabled", "disabled");
     }
-    await dispatch(signup(formState));
+    await dispatch(signup(formState))
+      .then((res) => {
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     btnRef.current.removeAttribute("disabled");
   };
   return (
@@ -101,6 +134,17 @@ function SignUp() {
                 );
               })}
             </>
+          )}
+          {formState.validationError && (
+            <span
+              style={{
+                color: "#ff0033",
+                fontWeight: 500,
+                maxWidth: "300px",
+              }}
+            >
+              {formState.validationError}
+            </span>
           )}
           <button ref={btnRef} type="submit" onClick={handleSubmit}>
             Sign Up
