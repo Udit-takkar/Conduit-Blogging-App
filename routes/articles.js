@@ -13,12 +13,12 @@ const { findById, findOneAndDelete } = require("../models/Article");
  * @desc return All the Articles
  * @access Authentication Optional
  */
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     let loggedInUser = null;
 
     if (typeof req.userData !== "undefined") {
-      loggedInUser = await User.findOne({ _id: user.userData.sub });
+      loggedInUser = await User.findOne({ _id: req.userData.sub });
     }
 
     const query = {};
@@ -39,11 +39,13 @@ router.get("/", async (req, res) => {
 
     if (typeof req.query.author !== "undefined" && req.query.author) {
       const user = await User.findOne({ username: req.query.author });
+      if (!user) res.status(404).send("Username Not Found");
+
       query.author = user._id;
     }
     if (typeof req.query.favorited !== "undefined" && req.query.favorited) {
       const user = await User.findOne({ username: req.query.favorited });
-      query._id = user._id;
+      query._id = { $in: user.favorites };
     }
 
     const articles = await Article.find(query)

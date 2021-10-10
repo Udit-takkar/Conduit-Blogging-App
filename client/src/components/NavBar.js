@@ -13,7 +13,7 @@ function NavBar() {
   const isLoggedIn = useSelector(isUserLoggedIn);
   const username = useSelector(getUsername);
   const goToHome = () => {
-    history.push("/global/?page=1");
+    history.push("/globalfeed");
   };
   return (
     <HeaderContainer>
