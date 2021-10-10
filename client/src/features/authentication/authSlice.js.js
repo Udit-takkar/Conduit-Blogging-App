@@ -141,15 +141,15 @@ export const SignUpSlice = createSlice({
   },
 });
 
-export const isUserLoggedIn = (state) => state.signup.isLoggedIn;
-export const isLoading = (state) => state.signup.loading;
+export const isUserLoggedIn = (state) => state.authSlice.isLoggedIn;
+export const isLoading = (state) => state.authSlice.loading;
 export const error = (state) => {
-  return state.signup.error;
+  return state.authSlice.error;
 };
-export const getUsername = (state) => state.signup.username;
-export const getUserEmail = (state) => state.signup.email;
-export const getUserImg = (state) => state.signup.image;
-export const getUserBio = (state) => state.signup.bio;
-export const getUserToken = (state) => state.signup.token;
+export const getUsername = (state) => state.authSlice.username;
+export const getUserEmail = (state) => state.authSlice.email;
+export const getUserImg = (state) => state.authSlice.image;
+export const getUserBio = (state) => state.authSlice.bio;
+export const getUserToken = (state) => state.authSlice.token;
 export const { logoutUser } = SignUpSlice.actions;
 export default SignUpSlice.reducer;

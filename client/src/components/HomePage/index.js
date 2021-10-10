@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { useHistory, useParams } from "react-router-dom";
 import HomeTabs from "./HomeTabs";
+import { GLOBAL_FEED, MY_FEED } from "../../constants/TabItem";
 
 function App({ isLoggedIn, activeItem, getPageArticles }) {
   const dispatch = useDispatch();
@@ -36,9 +37,9 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
   }, [page, tagname]);
 
   const handleNavItemClick = async (item) => {
-    if (item === "Global Feed") {
+    if (item === GLOBAL_FEED) {
       history.push("/globalfeed");
-    } else if (item === "Your Feed") {
+    } else if (item === MY_FEED) {
       history.push("/myfeed");
     }
   };
@@ -108,6 +109,8 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
 const HomePageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 75px;
 `;
 const AppContainer = styled.div`

@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { isUserLoggedIn, getUsername } from "../features/authentication/signup";
+import {
+  isUserLoggedIn,
+  getUsername,
+} from "../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
@@ -25,10 +28,10 @@ function NavBar() {
 
         {isLoggedIn ? (
           <>
-            <Link to="/newpost" style={linkStyle}>
+            <Link to="/newpost" style={navItemWithIcon}>
               <FontAwesomeIcon icon={faPlusSquare} /> New Post
             </Link>
-            <Link to="/settings" style={linkStyle}>
+            <Link to="/settings" style={navItemWithIcon}>
               <FontAwesomeIcon icon={faCog} /> Settings
             </Link>
             <Link to={`/profile/${username}`} style={linkStyle}>
@@ -50,14 +53,15 @@ function NavBar() {
   );
 }
 const HeaderContainer = styled.div`
-  position: sticky;
-  top: 0;
-  min-height: 70px;
-  min-width: 100vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  min-height: 70px;
+  min-width: 100vw;
+  overflow-x: hidden;
   box-shadow: 0 8px 6px -6px #999;
   background-color: white;
   z-index: 2;
@@ -70,12 +74,19 @@ const HeaderContainer = styled.div`
 const HeaderLinks = styled.div`
   display: flex;
   padding-right: 30px;
-
   > Link {
     padding-right: 10px;
   }
 `;
 const linkStyle = {
+  paddingRight: "20px",
+  textDecoration: "none",
+  color: "rgba(0,0,0,.3)",
+};
+
+const navItemWithIcon = {
+  display: "flex",
+  alignItems: "center",
   paddingRight: "20px",
   textDecoration: "none",
   color: "rgba(0,0,0,.3)",

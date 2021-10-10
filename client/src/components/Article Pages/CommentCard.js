@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getUsername } from "../../features/authentication/signup";
+import { getUsername } from "../../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 
 function CommentCard({ username, image, body, createdAt, id, deleteComment }) {

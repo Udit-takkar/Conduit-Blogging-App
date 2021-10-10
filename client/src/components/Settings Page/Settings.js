@@ -7,10 +7,10 @@ import {
   getUserBio,
   update,
   error,
-} from "../../features/authentication/signup";
+} from "../../features/authentication/authSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { logoutUser } from "../../features/authentication/signup";
+import { logoutUser } from "../../features/authentication/authSlice.js";
 import {
   faLink,
   faUser,
@@ -139,7 +139,8 @@ const InputBox = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.15);
   padding-left: 20px;
   margin-top: 10px;
-  min-width: 50%;
+  max-width: 700px;
+  width: 100%;
   > input {
     padding: 0.75rem 1.5rem;
     border: none;
@@ -167,7 +168,8 @@ const SettingsContainer = styled.div`
     border-radius: 0.3rem;
     border: 1px solid rgba(0, 0, 0, 0.15);
     margin-top: 10px;
-    min-width: 50%;
+    width: 100%;
+    max-width: 700px;
     min-height: 120px;
   }
 `;

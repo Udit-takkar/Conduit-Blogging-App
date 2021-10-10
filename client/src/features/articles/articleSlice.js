@@ -6,14 +6,15 @@ import {
   getGlobalArticles,
   getArticleByTag,
 } from "../../services/articles";
+import { GLOBAL_FEED, MY_FEED } from "../../constants/TabItem";
 
 const initialState = {
   loading: false,
   error: null,
   articles: [],
   articlesCount: 0,
-  navItems: ["Global Feed", "Your Feed"],
-  activeItem: "Global Feed",
+  navItems: [GLOBAL_FEED, MY_FEED],
+  activeItem: GLOBAL_FEED,
 };
 
 export const fetchFeedArticles = createAsyncThunk(
@@ -53,7 +54,7 @@ export const articleSlice = createSlice({
         articles: [],
         articlesCount: 0,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Your Feed",
+        activeItem: MY_FEED,
       });
     },
     [fetchFeedArticles.fulfilled]: (state, action) => {
@@ -63,7 +64,7 @@ export const articleSlice = createSlice({
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Your Feed",
+        activeItem: MY_FEED,
       });
     },
     [fetchFeedArticles.rejected]: (state, action) => {
@@ -73,18 +74,17 @@ export const articleSlice = createSlice({
         articles: [],
         articlesCount: 0,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Your Feed",
+        activeItem: MY_FEED,
       });
     },
     [fetchGlobalArticles.pending]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: true,
         error: null,
         articles: [],
         articlesCount: 0,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Global Feed",
+        activeItem: GLOBAL_FEED,
       });
     },
     [fetchGlobalArticles.fulfilled]: (state, action) => {
@@ -94,7 +94,7 @@ export const articleSlice = createSlice({
         articles: action.payload.articles,
         articlesCount: action.payload.articlesCount,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Global Feed",
+        activeItem: GLOBAL_FEED,
       });
     },
     [fetchGlobalArticles.rejected]: (state, action) => {
@@ -105,7 +105,7 @@ export const articleSlice = createSlice({
         articles: [],
         articlesCount: 0,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Global Feed",
+        activeItem: GLOBAL_FEED,
       });
     },
     [fetchArticlesByTag.pending]: (state, action) => {
@@ -116,7 +116,7 @@ export const articleSlice = createSlice({
         articles: [],
         articlesCount: 0,
         navItems: state.navItems.slice(0, 2),
-        activeItem: "Global Feed",
+        activeItem: GLOBAL_FEED,
       });
     },
     [fetchArticlesByTag.fulfilled]: (state, action) => {
@@ -137,7 +137,7 @@ export const articleSlice = createSlice({
         articles: [],
         articlesCount: 0,
         navItems: state.navItems,
-        activeItem: "Global Feed",
+        activeItem: GLOBAL_FEED,
       });
     },
     [fetchUserFavoritedArticle.pending]: (state, action) => {

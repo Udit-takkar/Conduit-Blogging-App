@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom";
 require("dotenv").config();
 
 function Tags() {
-  console.log("tag rendered");
   const history = useHistory();
   const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
@@ -54,9 +53,6 @@ const TagsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   display: inline-block;
-  // background-color: #818a91;
-  // background: #333;
-
   color: rgba(117, 117, 117, 1) !important;
   font-size: 0.7em;
   padding: 0.6em;
@@ -73,7 +69,6 @@ const TagsList = styled.div`
 const TagContainer = styled.div`
   max-width: 200px;
   padding: 0.5rem;
-  // background: #f3f3f3;
   margin-top: 1.5rem;
   max-height: fit-content !important;
 `;

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { postArticle } from "../services/articles";
-import { Redirect, useHistory } from "react-router-dom";
-import { getUsername } from "../features/authentication/signup";
+import { useHistory } from "react-router-dom";
+import { getUsername } from "../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { updateArticle } from "../services/articles";
-import { MdTitle } from "react-icons/md";
 import Yamde from "yamde";
 import {
   faHeading,
@@ -36,7 +35,6 @@ function NewPost() {
         tagList: location.state.tagList,
       });
     }
-    console.log(location);
   }, []);
 
   const handleChange = (e) => {
@@ -44,7 +42,6 @@ function NewPost() {
   };
 
   const handleEditor = (e) => {
-    // console.log(typeof e);
     setFormState({ ...formState, body: e });
   };
 
@@ -58,7 +55,6 @@ function NewPost() {
       history.push(`/articles/${res.article.slug}`);
     } else {
       const res = await postArticle(formState);
-      console.log(res);
       if (res.article !== undefined) {
         history.push(`/profile/${username}`);
       } else {
@@ -73,105 +69,73 @@ function NewPost() {
   };
 
   return (
-    <>
-      <NewPostContainer>
-        {err !== []
-          ? Object.entries(err).map(([key, value]) => {
-              return (
-                <Error>
-                  <span className="key">{key}</span> : {value}
-                  <br />
-                </Error>
-              );
-            })
-          : null}
+    <NewPostContainer>
+      {err !== []
+        ? Object.entries(err).map(([key, value]) => {
+            return (
+              <Error>
+                <span className="key">{key}</span> : {value}
+                <br />
+              </Error>
+            );
+          })
+        : null}
 
-        <InputBox>
-          <FontAwesomeIcon icon={faHeading} />
-          <input
-            onChange={handleChange}
-            value={formState.title}
-            placeholder="Article Title"
-            name="title"
-            id="input"
-          />
-        </InputBox>
-        <InputBox>
-          <FontAwesomeIcon icon={faParagraph} />
-          <input
-            onChange={handleChange}
-            value={formState.description}
-            placeholder="What's this article about"
-            name="description"
-          />
-        </InputBox>
-        <Editor>
-          <Yamde
-            name="body"
-            value={formState.body}
-            handler={handleEditor}
-            theme="light"
-          />
-        </Editor>
-        <InputBox>
-          <FontAwesomeIcon icon={faHashtag} />
-          <input
-            onChange={handleTags}
-            value={tags}
-            placeholder="Enter Tags"
-            name="tags"
-          />
-        </InputBox>
+      <InputBox>
+        <FontAwesomeIcon icon={faHeading} />
+        <input
+          onChange={handleChange}
+          value={formState.title}
+          placeholder="Article Title"
+          name="title"
+          id="input"
+        />
+      </InputBox>
+      <InputBox>
+        <FontAwesomeIcon icon={faParagraph} />
+        <input
+          onChange={handleChange}
+          value={formState.description}
+          placeholder="What's this article about"
+          name="description"
+        />
+      </InputBox>
+      <Editor>
+        <Yamde
+          name="body"
+          value={formState.body}
+          handler={handleEditor}
+          theme="light"
+        />
+      </Editor>
+      <InputBox>
+        <FontAwesomeIcon icon={faHashtag} />
+        <input
+          onChange={handleTags}
+          value={tags}
+          placeholder="Enter Tags"
+          name="tags"
+        />
+      </InputBox>
 
-        <button onClick={handleSubmit}>
-          {location.state !== undefined ? (
-            <span>Update Article</span>
-          ) : (
-            <span>Publish Article</span>
-          )}
-        </button>
-      </NewPostContainer>
-    </>
+      <button onClick={handleSubmit}>
+        {location.state !== undefined ? (
+          <span>Update Article</span>
+        ) : (
+          <span>Publish Article</span>
+        )}
+      </button>
+    </NewPostContainer>
   );
 }
-const InputBox = styled.div`
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.3rem;
-  padding-left: 20px;
-  margin-top: 10px;
-  > input {
-    padding: 1.25rem 1.5rem;
-    border: none;
-    min-width: 60vw;
-    ::placeholder {
-      color: rgba(0, 0, 0, 0.55);
-      font-family: "poppins";
-    }
-    font-family: "poppins";
-    :focus {
-      outline: none;
-    }
-  }
-`;
+
 const NewPostContainer = styled.div`
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   place-items: center;
   margin-top: 3rem;
-  > input {
-    padding: 1.25rem 1.5rem;
-    border-radius: 0.3rem;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    margin-top: 10px;
-    min-width: 60vw;
-    ::placeholder {
-      color: rgba(0, 0, 0, 0.55);
-      font-family: "poppins";
-    }
+  width:100%;
 
-    font-family: "poppins";
-  }
   > button {
     display: inline-block;
     padding: 1rem 1.75rem;
@@ -183,9 +147,34 @@ const NewPostContainer = styled.div`
     border: none;
     margin-top: 15px;
     cursor: pointer;
-    width: 63.5%;
+    width: 100%;
+    max-width: 700px;
     margin-bottom:30px
   }
+  }
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.3rem;
+  padding-left: 20px;
+  margin-top: 10px;
+  max-width: 700px;
+  width: 100%;
+  > input {
+    padding: 1.25rem 1.5rem;
+    border: none;
+    width: 100%;
+    ::placeholder {
+      color: rgba(0, 0, 0, 0.55);
+      font-family: "poppins";
+    }
+    font-family: "poppins";
+    :focus {
+      outline: none;
+    }
   }
 `;
 
@@ -199,7 +188,8 @@ const Error = styled.div`
 
 const Editor = styled.div`
   margin-top: 20px;
-  width: 63.5%;
+  width: 100%;
+  max-width: 700px;
   height: 350px;
   margin-bottom: 30px;
 `;

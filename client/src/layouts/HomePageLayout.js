@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Banner from "../components/Banners/Banner";
 import Tags from "../components/Tags";
 import Home from "../components/HomePage";
-import { isUserLoggedIn } from "../features/authentication/signup";
+import { isUserLoggedIn } from "../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 import {

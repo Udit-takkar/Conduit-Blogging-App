@@ -8,7 +8,7 @@ import Comments from "./Comments";
 import {
   isUserLoggedIn,
   getUsername,
-} from "../../features/authentication/signup";
+} from "../../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 import { deleteArticle } from "../../services/articles";
 import { useHistory } from "react-router-dom";

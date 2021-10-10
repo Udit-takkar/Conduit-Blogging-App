@@ -3,12 +3,11 @@ import { Redirect, Route } from "react-router-dom";
 import { store } from "./app/store";
 
 function PrivateRoute({ children, ...rest }) {
-  // console.log(store.getState().signup.isLoggedIn);
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        store.getState().signup.isLoggedIn ? (
+        store.getState().authSlice.isLoggedIn ? (
           children
         ) : (
           <Redirect

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
-  getUsername,
   getUserBio,
   getUserImg,
   isUserLoggedIn,
-} from "../../features/authentication/signup";
+} from "../../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 import {
   faCog,
@@ -13,13 +12,12 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Redirect, Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { CheckFollowing } from "../../services/profiles";
 import { Follow } from "../../services/profiles";
 import { UnFollow } from "../../services/profiles";
 
 function ProfileBanner({ username, LoggedInUsername }) {
-  console.log(LoggedInUsername, username);
   const bio = useSelector(getUserBio);
   const [isFollowing, setIsFollowing] = useState(false);
   const history = useHistory();
@@ -34,7 +32,7 @@ function ProfileBanner({ username, LoggedInUsername }) {
   useEffect(() => {
     const intializeState = async () => {
       const res = await CheckFollowing(username);
-      if (res && res.data) setIsFollowing(res.profile.following);
+      if (res?.data) setIsFollowing(res.profile.following);
     };
     intializeState();
   }, []);

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { MarkFavourite } from "../../services/articles";
 import { MarkUnFavourite } from "../../services/articles";
-import { isUserLoggedIn } from "../../features/authentication/signup";
+import { isUserLoggedIn } from "../../features/authentication/authSlice.js";
 import { useSelector } from "react-redux";
 
 function ArticleCard({

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileBanner from "../Banners/ProfileBanner";
 import ArticleCard from "../Article Pages/ArticleCard";
-import { getUsername } from "../../features/authentication/signup";
+import { getUsername } from "../../features/authentication/authSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import Pagination from "../Article Pages/Pagination";
