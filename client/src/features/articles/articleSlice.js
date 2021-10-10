@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../config/api.config";
+import {
+  getFavouritedArticles,
+  getArticlesByUsername,
+  getFeedArticles,
+  getGlobalArticles,
+  getArticleByTag,
+} from "../../services/articles";
 
 const initialState = {
   loading: false,
@@ -12,54 +18,27 @@ const initialState = {
 
 export const fetchFeedArticles = createAsyncThunk(
   "articles/feed",
-  async ({ page }, { getState }) => {
-    try {
-      console.log("page", page);
-      const response = await axios.get(
-        `/articles/feed?limit=10&offset=${(page - 1) * 10}`
-      );
-      console.log(response);
-      return response.data;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
-  }
+  getFeedArticles
 );
+
 export const fetchGlobalArticles = createAsyncThunk(
   "articles/global",
-  async ({ page }, { getState }) => {
-    console.log(getState());
-    try {
-      console.log("Fetch global");
-      const response = await axios.get(
-        `/articles?limit=10&offset=${(page - 1) * 10}`
-      );
-      console.log(response.data);
-      return response.data;
-    } catch (e) {
-      console.log(e.response);
-      return e;
-    }
-  }
+  getGlobalArticles
 );
 
 export const fetchArticlesByTag = createAsyncThunk(
   "articles/tag",
+  getArticleByTag
+);
 
-  async ({ page, tag }) => {
-    // console.log(getState().articleSlice.navItems);
-    console.log(page, tag);
-    try {
-      const response = await axios.get(
-        `/articles?tag=${tag}&limit=10&offset=${(page - 1) * 10}`
-      );
-      return response.data;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
+export const fetchUserFavoritedArticle = createAsyncThunk(
+  "articles/favorited",
+  getFavouritedArticles
+);
+
+export const fetchArticleByUsername = createAsyncThunk(
+  "articles/my",
+  getArticlesByUsername
 );
 
 export const articleSlice = createSlice({
@@ -141,9 +120,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchArticlesByTag.fulfilled]: (state, action) => {
-      // let updateNavItems = state.navItems;
-      // updateNavItems[2] = action.meta.arg.tag; //Just replace it with new tag
-
       console.log(action);
       Object.assign(state, {
         loading: false,
@@ -155,7 +131,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchArticlesByTag.rejected]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: null,
@@ -163,6 +138,67 @@ export const articleSlice = createSlice({
         articlesCount: 0,
         navItems: state.navItems,
         activeItem: "Global Feed",
+      });
+    },
+    [fetchUserFavoritedArticle.pending]: (state, action) => {
+      Object.assign(state, {
+        loading: true,
+        error: null,
+        articles: [],
+        articlesCount: 0,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
+      });
+    },
+    [fetchUserFavoritedArticle.fulfilled]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        articles: action.payload.articles,
+        articlesCount: action.payload.articlesCount,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
+      });
+    },
+    [fetchUserFavoritedArticle.rejected]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        articles: [],
+        articlesCount: 0,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
+      });
+    },
+    [fetchArticleByUsername.pending]: (state, action) => {
+      Object.assign(state, {
+        loading: true,
+        error: null,
+        articles: [],
+        articlesCount: 0,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
+      });
+    },
+    [fetchArticleByUsername.fulfilled]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        articles: action.payload.articles,
+        articlesCount: action.payload.articlesCount,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
+      });
+    },
+    [fetchArticleByUsername.rejected]: (state, action) => {
+      console.log(action);
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        articles: [],
+        articlesCount: 0,
+        navItems: state.navItems,
+        activeItem: state.activeItem,
       });
     },
   },

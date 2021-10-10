@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ArticleCard from "../Article Pages/ArticleCard";
 import {
@@ -30,7 +30,6 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
 
   useEffect(() => {
     const getArticles = async () => {
-      console.log(getPageArticles);
       await dispatch(getPageArticles({ page, tag: tagname ?? null }));
     };
     getArticles();
@@ -76,6 +75,7 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
                   description,
                   favoritesCount,
                   createdAt,
+                  favorited,
                 } = article;
 
                 return (
@@ -88,6 +88,7 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
                     createdAt={createdAt}
                     favoritesCount={favoritesCount}
                     slug={article.slug}
+                    favorited={favorited}
                   />
                 );
               })}

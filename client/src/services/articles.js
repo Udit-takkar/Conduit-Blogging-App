@@ -1,5 +1,42 @@
 import axios from "../config/api.config";
 
+export const getFeedArticles = async ({ page }) => {
+  try {
+    console.log("page", page);
+    const response = await axios.get(
+      `/articles/feed?limit=10&offset=${(page - 1) * 10}`
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
+export const getGlobalArticles = async ({ page }) => {
+  try {
+    const response = await axios.get(
+      `/articles?limit=10&offset=${(page - 1) * 10}`
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e.response);
+    return e;
+  }
+};
+
+export const getArticleByTag = async ({ page, tag }) => {
+  try {
+    const response = await axios.get(
+      `/articles?tag=${tag}&limit=10&offset=${(page - 1) * 10}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
 export const getArticleBySlug = async (slug) => {
   try {
     const res = await axios.get(`/articles/${slug}`);
@@ -29,8 +66,6 @@ export const deleteArticle = async (slug) => {
 };
 
 export const DeleteComment = async (slug, id) => {
-  console.log(slug, id);
-
   try {
     const res = await axios.delete(`/articles/${slug}/comments/${id}`);
     console.log(res.data);
@@ -40,7 +75,7 @@ export const DeleteComment = async (slug, id) => {
   }
 };
 
-export const Favourite = async (page, username) => {
+export const getFavouritedArticles = async ({ page, username }) => {
   try {
     const res = await axios.get(
       `/articles/?favorited=${username}&limit=10&offset=${(page - 1) * 10}`
@@ -52,7 +87,6 @@ export const Favourite = async (page, username) => {
 };
 
 export const isFavourite = async (slug) => {
-  // const token = getToken();
   try {
     const res = await axios.get(`/articles/${slug}`);
     return res.data;
@@ -72,8 +106,6 @@ export const MarkFavourite = async (slug) => {
 };
 
 export const MarkUnFavourite = async (slug) => {
-  console.log(slug);
-
   try {
     const res = await axios.delete(`/articles/${slug}/favorite`);
     return res.data;
@@ -82,8 +114,7 @@ export const MarkUnFavourite = async (slug) => {
   }
 };
 
-export const myArticles = async (page, username) => {
-  console.log(page, username);
+export const getArticlesByUsername = async ({ page, username }) => {
   try {
     const res = await axios.get(
       `/articles/?author=${username}&limit=10&offset=${(page - 1) * 10}`
@@ -94,10 +125,8 @@ export const myArticles = async (page, username) => {
     return e.response;
   }
 };
-let count = 0;
+
 export const postArticle = async ({ title, description, body, tagList }) => {
-  count++;
-  console.log(count);
   try {
     const res = await axios.post("/articles", {
       article: {
@@ -107,7 +136,6 @@ export const postArticle = async ({ title, description, body, tagList }) => {
         tagList,
       },
     });
-    console.log("Post request");
 
     return res.data;
   } catch (err) {

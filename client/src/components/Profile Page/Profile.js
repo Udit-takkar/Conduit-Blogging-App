@@ -3,54 +3,47 @@ import styled from "styled-components";
 import ProfileBanner from "../Banners/ProfileBanner";
 import ArticleCard from "../Article Pages/ArticleCard";
 import { getUsername } from "../../features/authentication/signup";
-import { useSelector } from "react-redux";
-import { myArticles } from "../../services/articles";
-import { Favourite } from "../../services/articles";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useParams, useHistory } from "react-router-dom";
 import Pagination from "../Article Pages/Pagination";
 import Loader from "react-loader-spinner";
 import queryString from "query-string";
+import {
+  getArticles,
+  getArticlesCount,
+  loading,
+  fetchArticleByUsername,
+  fetchUserFavoritedArticle,
+} from "../../features/articles/articleSlice";
 
 function Profile() {
   const { username } = useParams();
-  const history = useHistory();
+  const dispatch = useDispatch();
   const { search } = useLocation();
-  let { page } = queryString.parse(search);
-  if (page === undefined) page = 1;
+  const history = useHistory();
+  const { page } = queryString.parse(search);
 
+  const isLoading = useSelector(loading);
+  const articles = useSelector(getArticles);
+  const articlesCount = useSelector(getArticlesCount);
   const LoggedInUsername = useSelector(getUsername);
 
-  const fetchMyArticles = async (page) => {
-    setLoading(true);
-    const data = await myArticles(page, username);
-    setArticles(data.articles);
-    setArticlesCount(data.articlesCount);
-    setLoading(false);
-  };
-
-  const fetchFavouriteArticles = async (page) => {
-    setLoading(true);
-    const data = await Favourite(page, username);
-    setArticles(data.articles);
-    setArticlesCount(data.articlesCount);
-    setLoading(false);
-  };
-
-  const [articles, setArticles] = useState([]);
-  const [articlesCount, setArticlesCount] = useState(0);
   const [activeTab, setActiveTab] = useState({
-    getArticles: fetchMyArticles,
-    tabName: "My Articles",
+    tabName: `${
+      LoggedInUsername === username ? "My Articles" : `${username} Articles`
+    }`,
+    getArticles: fetchArticleByUsername,
   });
-  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    activeTab.getArticles(page);
-  }, [username, page, activeTab]);
+    const loadInitialArticles = async () => {
+      await dispatch(activeTab.getArticles({ page: page ?? 1, username }));
+    };
+    loadInitialArticles();
+  }, [page, activeTab.tabName]);
 
   return (
-    <>
+    <ProfilePageContainer>
       <ProfileBanner username={username} LoggedInUsername={LoggedInUsername} />
       <ProfileArticles>
         <NavBar>
@@ -58,10 +51,16 @@ function Profile() {
             className={activeTab.tabName === "My Articles" ? "active" : null}
             onClick={() => {
               setActiveTab({
-                getArticles: fetchMyArticles,
-                tabName: "My Articles",
+                tabName: `${
+                  LoggedInUsername === username
+                    ? "My Articles"
+                    : `${username} Articles`
+                }`,
+                getArticles: fetchArticleByUsername,
               });
-              history.push({ search: "?page=1" });
+              history.push({
+                search: `?page=${page}`,
+              });
             }}
           >
             {LoggedInUsername === username ? (
@@ -74,10 +73,12 @@ function Profile() {
             className={activeTab.tabName === "My Articles" ? null : "active"}
             onClick={() => {
               setActiveTab({
-                getArticles: fetchFavouriteArticles,
                 tabName: "Favourite Articles",
+                getArticles: fetchUserFavoritedArticle,
               });
-              history.push({ search: "?page=1" });
+              history.push({
+                search: `?page=${page}`,
+              });
             }}
           >
             <p> Favourite Articles</p>
@@ -103,6 +104,7 @@ function Profile() {
                   description,
                   createdAt,
                   favoritesCount,
+                  favorited,
                 } = article;
 
                 return (
@@ -115,6 +117,7 @@ function Profile() {
                     createdAt={createdAt}
                     slug={article.slug}
                     favoritesCount={favoritesCount}
+                    favorited={favorited}
                   />
                 );
               })}
@@ -123,15 +126,17 @@ function Profile() {
         </ArticlesContainer>
         <Pagination
           articlesCount={articlesCount}
-          getPageArticles={activeTab.getArticles}
           tabName={activeTab.tabName}
-          Component="Profile"
           activePage={page}
         />
       </ProfileArticles>
-    </>
+    </ProfilePageContainer>
   );
 }
+
+const ProfilePageContainer = styled.div`
+  margin-bottom: 50px;
+`;
 
 const ProfileArticles = styled.div`
   display: flex;
