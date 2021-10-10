@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { MarkFavourite } from "../../services/articles";
-import { getArticleBySlug } from "../../services/articles";
 import { MarkUnFavourite } from "../../services/articles";
-import { isFavourite } from "../../services/articles";
 import { isUserLoggedIn } from "../../features/authentication/signup";
 import { useSelector } from "react-redux";
 
@@ -18,9 +16,10 @@ function ArticleCard({
   createdAt,
   slug,
   favoritesCount,
+  favorited,
 }) {
   const isLoggedIn = useSelector(isUserLoggedIn);
-  const [isactive, setIsactive] = useState(false);
+  const [isactive, setIsactive] = useState(favorited);
   const history = useHistory();
   const goToArticle = (slug) => {
     history.push(`/articles/${slug}`);
@@ -30,60 +29,37 @@ function ArticleCard({
   };
   const [favorites, setFavorites] = useState(favoritesCount);
   const date = createdAt.split("T")[0];
-  useEffect(() => {
-    const intializeState = async () => {
-      if (isLoggedIn === true) {
-        const checkFavorite = await isFavourite(slug);
-        // console.log(checkFavorite);
-        if (
-          checkFavorite &&
-          checkFavorite.article &&
-          checkFavorite.article.favorited === true
-        ) {
-          setIsactive(true);
-        }
-      }
-    };
-
-    intializeState();
-  }, []);
 
   const handlefavorite = async (slug) => {
-    const checkLike = async () => {
-      if (isLoggedIn === true) {
-        // const checkFavorite = await isFavourite(slug);
-        if (isactive === true) {
-          const unFavorite = await MarkUnFavourite(slug);
-          console.log(unFavorite);
+    if (isLoggedIn) {
+      if (isactive) {
+        setFavorites((favoritesCount) => favoritesCount - 1);
+        const unFavorite = await MarkUnFavourite(slug);
+        if (unFavorite?.article) {
           setFavorites(unFavorite.article.favoritesCount);
-          setIsactive(false);
+          setIsactive(unFavorite.article.favorited);
         } else {
-          const data = await MarkFavourite(slug);
-          setFavorites(data.article.favoritesCount);
-          setIsactive(true);
+          setFavorites((favoritesCount) => favoritesCount + 1);
+        }
+      } else {
+        setFavorites((favoritesCount) => favoritesCount + 1);
+        const favorite = await MarkFavourite(slug);
+        if (favorite?.article) {
+          setFavorites(favorite.article.favoritesCount);
+          setIsactive(favorite.article.favorited);
+        } else {
+          setFavorites((favoritesCount) => favoritesCount - 1);
         }
       }
-    };
-
-    if (isLoggedIn === true) {
-      if (isactive === false) {
-        setFavorites((favoritesCount) => favoritesCount + 1);
-        setIsactive(true, checkLike());
-      } else {
-        setFavorites((favoritesCount) => favoritesCount - 1);
-        setIsactive(false, checkLike());
-      }
+    } else {
+      history.push("/signin");
     }
   };
   return (
     <ArticleCardContainer>
       <AuthorContainer>
         <div>
-          <img
-            style={{ height: "32px", width: "32px", borderRadius: "30px" }}
-            src={image}
-            alt="avatar"
-          />
+          <img style={Image} src={image} alt="avatar" />
         </div>
         <Author>
           <h4 onClick={() => goToProfile(username)}>{username}</h4>
@@ -127,7 +103,6 @@ const Like = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  // flex-direction: column;
   color: #5cb85c;
   background-image: none;
   background-color: transparent;
@@ -189,4 +164,11 @@ const readmore = {
   textDecoration: "none",
   color: "#bbb",
 };
+
+const Image = {
+  height: "32px",
+  width: "32px",
+  borderRadius: "30px",
+};
+
 export default ArticleCard;
