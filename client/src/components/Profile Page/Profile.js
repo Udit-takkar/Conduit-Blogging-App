@@ -124,11 +124,7 @@ function Profile() {
             </>
           )}
         </ArticlesContainer>
-        <Pagination
-          articlesCount={articlesCount}
-          tabName={activeTab.tabName}
-          activePage={page}
-        />
+        <Pagination articlesCount={articlesCount} activePage={page} />
       </ProfileArticles>
     </ProfilePageContainer>
   );

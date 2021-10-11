@@ -53,20 +53,17 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
       />
       <AppContainer>
         <ArticlesContainer>
-          {articlesCount === 0 ? (
-            <>
-              {isLoading === true ? (
-                <Loader
-                  type="TailSpin"
-                  color="#5cb85c"
-                  height={80}
-                  width={80}
-                  style={{ marginTop: "50px" }}
-                />
-              ) : (
-                <p>No articles are here... yet.</p>
-              )}
-            </>
+          {isLoading === true ? (
+            <Loader
+              type="TailSpin"
+              color="#5cb85c"
+              height={80}
+              width={80}
+              style={{ marginTop: "50px" }}
+            />
+          ) : null}
+          {!isLoading && articlesCount === 0 ? (
+            <p>No articles are here... yet.</p>
           ) : (
             <>
               {articles?.map((article) => {
@@ -96,11 +93,7 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
             </>
           )}
         </ArticlesContainer>
-        <Pagination
-          articlesCount={articlesCount}
-          tabName={activeItem}
-          activePage={page}
-        />
+        <Pagination articlesCount={articlesCount} activePage={page} />
       </AppContainer>
     </HomePageContainer>
   );

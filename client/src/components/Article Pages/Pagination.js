@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { getPagesArray } from "../../utils/paginationHelper";
 
-function Pagination({ articlesCount, activePage, tabName }) {
+function Pagination({ articlesCount, activePage }) {
   const history = useHistory();
   const activePageNumber = activePage ?? 1;
-  const NumberOfPages = [];
-
-  for (let i = 1; i <= Math.ceil(articlesCount / 10); ++i) {
-    NumberOfPages.push(i);
-  }
+  const pagesCount = Math.ceil(articlesCount / 10);
+  const NumberOfPages = useMemo(() => {
+    console.log("I am renderign ");
+    return getPagesArray(pagesCount);
+  }, [pagesCount]);
+  console.log(NumberOfPages);
   const handlePages = async (page) => {
     history.push({
       search: `?page=${page}`,
