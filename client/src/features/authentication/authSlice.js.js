@@ -61,7 +61,6 @@ export const SignUpSlice = createSlice({
       });
     },
     [signup.fulfilled]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: null,
@@ -73,7 +72,6 @@ export const SignUpSlice = createSlice({
       });
     },
     [signup.rejected]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: { page: "signup", error: action.payload.data.errors },
@@ -96,7 +94,6 @@ export const SignUpSlice = createSlice({
       });
     },
     [login.fulfilled]: (state, action) => {
-      console.log(action.payload);
       Object.assign(state, {
         loading: false,
         error: null,
@@ -108,7 +105,6 @@ export const SignUpSlice = createSlice({
       });
     },
     [login.rejected]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         // error: { page: "signin", error: action.payload.data.errors },
@@ -120,11 +116,8 @@ export const SignUpSlice = createSlice({
         image: null,
       });
     },
-    [update.pending]: (state, action) => {
-      console.log(action);
-    },
+    [update.pending]: (state, action) => {},
     [update.fulfilled]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: null,
@@ -135,9 +128,7 @@ export const SignUpSlice = createSlice({
         image: action.payload.user.image,
       });
     },
-    [update.rejected]: (state, action) => {
-      console.log(action);
-    },
+    [update.rejected]: (state, action) => {},
   },
 });
 

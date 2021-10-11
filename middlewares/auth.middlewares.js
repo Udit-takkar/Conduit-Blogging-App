@@ -5,13 +5,11 @@ const redis_client = require("../config/redis_connect");
 function verifyToken(req, res, next) {
   try {
     if (typeof req.cookies.accessToken === "undefined") {
-      console.log(req.cookies);
       req.token = null;
       next();
     } else {
       const token = req.cookies.accessToken;
       const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-      // console.log(decoded);
       req.userData = decoded;
 
       req.token = token;

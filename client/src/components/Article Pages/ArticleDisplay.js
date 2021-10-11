@@ -34,7 +34,6 @@ function ArticleDisplay() {
     />
   );
   const { slug } = useParams();
-  // console.log(slug);
   const [article, setArticle] = useState({
     username: "",
     image: "",
@@ -64,7 +63,6 @@ function ArticleDisplay() {
         description,
         tagList,
       } = data.article;
-      console.log(data.article);
       setArticle({
         username,
         image,
@@ -87,10 +85,8 @@ function ArticleDisplay() {
       if (res.comment) {
         setComment({ comment: "", Loading: false });
         const cmtBox = document.getElementById("CommentBox");
-        console.log(cmtBox.scrollHeight);
         window.scrollTo({ top: cmtBox.scrollHeight, behaviour: "smooth" });
       }
-      console.log(comment);
     } else {
       history.push("/signin");
     }

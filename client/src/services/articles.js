@@ -2,7 +2,6 @@ import axios from "../config/api.config";
 
 export const getFeedArticles = async ({ page }) => {
   try {
-    console.log("page", page);
     const response = await axios.get(
       `/articles/feed?limit=10&offset=${(page - 1) * 10}`
     );
@@ -58,7 +57,6 @@ export const getCommentsBySlug = async (slug) => {
 export const deleteArticle = async (slug) => {
   try {
     const res = await axios.delete(`/articles/${slug}`);
-    console.log(res);
     return res;
   } catch (e) {
     return e.response;
@@ -68,7 +66,6 @@ export const deleteArticle = async (slug) => {
 export const DeleteComment = async (slug, id) => {
   try {
     const res = await axios.delete(`/articles/${slug}/comments/${id}`);
-    console.log(res.data);
     return res.data;
   } catch (err) {
     return err.response;
@@ -86,17 +83,7 @@ export const getFavouritedArticles = async ({ page, username }) => {
   }
 };
 
-export const isFavourite = async (slug) => {
-  try {
-    const res = await axios.get(`/articles/${slug}`);
-    return res.data;
-  } catch (err) {
-    return err.response;
-  }
-};
 export const MarkFavourite = async (slug) => {
-  console.log(slug);
-
   try {
     const res = await axios.post(`/articles/${slug}/favorite`);
     return res.data;
@@ -119,7 +106,6 @@ export const getArticlesByUsername = async ({ page, username }) => {
     const res = await axios.get(
       `/articles/?author=${username}&limit=10&offset=${(page - 1) * 10}`
     );
-    console.log(res.data);
     return res.data;
   } catch (e) {
     return e.response;
@@ -168,7 +154,6 @@ export const updateArticle = async (slug, formState) => {
         tagList: formState.tagList,
       },
     });
-    console.log(res.data);
     return res.data;
   } catch (e) {
     console.log(e);

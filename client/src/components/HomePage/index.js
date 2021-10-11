@@ -31,7 +31,9 @@ function App({ isLoggedIn, activeItem, getPageArticles }) {
 
   useEffect(() => {
     const getArticles = async () => {
-      await dispatch(getPageArticles({ page, tag: tagname ?? null }));
+      await dispatch(
+        getPageArticles({ page: page ?? 1, tag: tagname ?? null })
+      );
     };
     getArticles();
   }, [page, tagname]);

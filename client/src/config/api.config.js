@@ -41,16 +41,12 @@ axios.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
-    console.log(originalRequest);
     if (
       error.response.status === 401 &&
       error.response.refreshTokenError !== true
     ) {
       try {
         const res = await Axios.post("/refresh");
-        console.log("Refreshing");
-        console.log(res.data);
-        console.log("Sending Back orginal");
         return axios.request(originalRequest, { withCredentials: true });
       } catch (err) {
         if (err.response.status === 401) {

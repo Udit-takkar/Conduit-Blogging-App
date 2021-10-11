@@ -147,7 +147,6 @@ router.post("/", verifyToken, async (req, res) => {
     return res.sendStatus(401);
   }
   try {
-    // console.log(req.userData.sub);
     const user = await User.findById({ _id: req.userData.sub });
 
     if (!user) {
@@ -253,10 +252,8 @@ router.post("/:slug/favorite", verifyToken, async (req, res, next) => {
     await article.populate("author", function (err) {
       console.log(err);
     });
-    // console.log(user);
     await user.favorite(article._id);
     await article.updateFavoriteCount();
-    // console.log(article);
     return res.status(200).send({ article: article.toJSONFor(user) });
   } catch (err) {
     console.log(err);
@@ -352,7 +349,7 @@ router.delete("/:slug/comments/:id", verifyToken, async (req, res) => {
   try {
     const { slug } = req.params;
     const { id } = req.params;
-    console.log(id);
+
     let article = await Article.findOne({ slug });
     if (!article) return res.status(404).send("Not Found");
 
@@ -391,7 +388,6 @@ router.get("/:slug/comments", verifyToken, async (req, res) => {
     if (req.token) {
       user = await User.findById({ _id: req.userData.sub });
     }
-    // console.log(user);
     const article = await Article.findOne({ slug });
     if (!article) return res.status(404).status("Article Not found");
 

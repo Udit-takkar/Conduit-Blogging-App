@@ -36,8 +36,7 @@ function Settings() {
     email: userEmail,
     password: "",
   });
-  console.log(userBio);
-  console.log(updateForm);
+
   const handleChange = (e) => {
     setUpdateForm({ ...updateForm, [e.target.name]: e.target.value });
   };

@@ -98,7 +98,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchGlobalArticles.rejected]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: action.error,
@@ -109,7 +108,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchArticlesByTag.pending]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: true,
         error: null,
@@ -120,7 +118,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchArticlesByTag.fulfilled]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: null,
@@ -191,7 +188,6 @@ export const articleSlice = createSlice({
       });
     },
     [fetchArticleByUsername.rejected]: (state, action) => {
-      console.log(action);
       Object.assign(state, {
         loading: false,
         error: null,

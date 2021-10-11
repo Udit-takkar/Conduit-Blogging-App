@@ -27,7 +27,6 @@ app.use("/api/user", require("./routes/user"));
 app.use("/api/profiles", require("./routes/profiles"));
 app.use("/api/articles", require("./routes/articles"));
 app.use("/api/tags", require("./routes/tags"));
-// console.log(process.env.JWT_REFRESH_SECRET
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));

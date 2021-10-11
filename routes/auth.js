@@ -75,7 +75,6 @@ router.post(
     check("user.password", "Password is required").exists(),
   ],
   async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -113,7 +112,6 @@ router.delete("/logout", verifyToken, async (req, res) => {
   if (!req.token) {
     return res.status(403).send("Forbidden");
   }
-  console.log("Logout ");
   const user_id = req.userData.sub;
   const token = req.cookies.accessToken;
 

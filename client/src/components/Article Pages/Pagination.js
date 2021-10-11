@@ -8,10 +8,8 @@ function Pagination({ articlesCount, activePage }) {
   const activePageNumber = activePage ?? 1;
   const pagesCount = Math.ceil(articlesCount / 10);
   const NumberOfPages = useMemo(() => {
-    console.log("I am renderign ");
     return getPagesArray(pagesCount);
   }, [pagesCount]);
-  console.log(NumberOfPages);
   const handlePages = async (page) => {
     history.push({
       search: `?page=${page}`,

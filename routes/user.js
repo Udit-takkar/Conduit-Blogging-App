@@ -15,7 +15,6 @@ router.get("/", verifyToken, async (req, res) => {
   }
   try {
     const user = await User.findById({ _id: req.userData.sub });
-    // console.log(user)
     return res.status(200).send({ user: user.toUserJSON() });
   } catch (err) {
     return res.status(404).send("Not Found User");

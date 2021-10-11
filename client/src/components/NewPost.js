@@ -51,7 +51,6 @@ function NewPost() {
 
     if (location.state !== undefined) {
       const res = await updateArticle(location.state.slug, formState);
-      // console.log(res);
       history.push(`/articles/${res.article.slug}`);
     } else {
       const res = await postArticle(formState);

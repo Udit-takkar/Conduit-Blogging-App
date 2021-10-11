@@ -14,17 +14,14 @@ function Comments({ slug, Loading }) {
     if (res) {
       setDeleting(false);
     }
-    console.log(res);
   };
 
   useEffect(() => {
     const fetchComments = async () => {
       const data = await getCommentsBySlug(slug);
-      console.log(data);
       setComments(data.comments);
     };
     fetchComments();
-    console.log(Loading);
   }, [Loading, deleting]);
 
   return (

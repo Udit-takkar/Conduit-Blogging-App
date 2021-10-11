@@ -42,7 +42,6 @@ function SignUp() {
   }, []);
 
   const handleChange = (e) => {
-    console.log(formState);
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
