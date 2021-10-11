@@ -6,7 +6,6 @@ import {
   getUserImg,
   getUserBio,
   update,
-  error,
 } from "../../features/authentication/authSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -20,34 +19,70 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { API_DELETE_LOGOUT } from "../../constants/api";
+import {
+  EMAIL_ERROR,
+  USERNAME_ERROR,
+  IMAGE_ERROR,
+  SUCCESS_MESSAGE,
+  PASSWORD_ERROR,
+} from "../../constants/SettingsFormHelper";
+
+var validator = require("email-validator");
 
 function Settings() {
+  const validUsername = new RegExp("^[a-zA-Z0-9]{4,}$");
+  const validImageLink = new RegExp(".(jpeg|jpg|gif|png)$");
   const dispatch = useDispatch();
   const history = useHistory();
   const username = useSelector(getUsername);
   const userEmail = useSelector(getUserEmail);
   const userImg = useSelector(getUserImg) || "";
   const userBio = useSelector(getUserBio);
-  const checkError = useSelector(error);
   const [updateForm, setUpdateForm] = useState({
     image: userImg,
     username: username,
     bio: userBio,
     email: userEmail,
     password: "",
+    validationError: "",
+    successMessage: "",
   });
 
   const handleChange = (e) => {
-    setUpdateForm({ ...updateForm, [e.target.name]: e.target.value });
+    setUpdateForm({
+      ...updateForm,
+      validationError: "",
+      successMessage: "",
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     //add validation here
-    const check = await dispatch(update(updateForm));
-    console.log(check);
-    if (!checkError) {
-      console.log(checkError);
+    console.log(updateForm.username);
+    if (!validator.validate(updateForm.email)) {
+      setUpdateForm({ ...updateForm, validationError: EMAIL_ERROR });
+      return;
+    } else if (!validUsername.test(updateForm.username)) {
+      setUpdateForm({ ...updateForm, validationError: USERNAME_ERROR });
+      return;
+    } else if (!validImageLink.test(updateForm.image)) {
+      setUpdateForm({ ...updateForm, validationError: IMAGE_ERROR });
+      return;
+    } else if (
+      updateForm.password !== "" &&
+      updateForm.password.trim().length < 6
+    ) {
+      setUpdateForm({ ...updateForm, validationError: PASSWORD_ERROR });
+      return;
+    }
+    const res = await dispatch(update(updateForm));
+    if (res?.payload?.user) {
+      console.log(res);
+      setUpdateForm({ ...updateForm, successMessage: SUCCESS_MESSAGE });
+    } else {
+      setUpdateForm({ ...updateForm, validationError: "Something Went Wrong" });
     }
   };
 
@@ -115,7 +150,28 @@ function Settings() {
             type="password"
           />
         </InputBox>
-
+        {updateForm.validationError && (
+          <span
+            style={{
+              color: "#ff0033",
+              fontWeight: 500,
+              maxWidth: "500px",
+            }}
+          >
+            {updateForm.validationError}
+          </span>
+        )}
+        {updateForm.successMessage && (
+          <span
+            style={{
+              color: "#5cb887",
+              fontWeight: 500,
+              maxWidth: "500px",
+            }}
+          >
+            {SUCCESS_MESSAGE}
+          </span>
+        )}
         <ButtonContainer>
           <button style={logoutBtn} onClick={handleLogout} type="submit">
             Logout
@@ -177,7 +233,7 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-
+  margin-top: 50px;
   > button {
     border: none;
     margin-top: 0.5rem;

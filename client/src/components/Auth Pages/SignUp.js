@@ -20,7 +20,7 @@ import {
 var validator = require("email-validator");
 
 function SignUp() {
-  const validUsername = new RegExp("/^[a-zA-Z0-9]{3,}$/");
+  const validUsername = new RegExp("^[a-zA-Z0-9]{4,}$");
   const dispatch = useDispatch();
   const history = useHistory();
   const [formState, setFormState] = useState({
@@ -60,7 +60,7 @@ function SignUp() {
     } else if (!validUsername.test(formState.username)) {
       setFormState({ ...formState, validationError: USERNAME_ERROR });
       return;
-    } else if (formState.password.trim.length === 0) {
+    } else if (formState.password.trim().length === 0) {
       setFormState({ ...formState, validationError: PASSWORD_EMPTY });
       return;
     }
@@ -70,12 +70,14 @@ function SignUp() {
     }
     await dispatch(signup(formState))
       .then((res) => {
+        btnRef.current.removeAttribute("disabled");
+
         history.push("/");
       })
       .catch((err) => {
+        btnRef.current.removeAttribute("disabled");
         console.log(err);
       });
-    btnRef.current.removeAttribute("disabled");
   };
   return (
     <PageContainer>
