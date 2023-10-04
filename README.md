@@ -1,8 +1,6 @@
 <div align="center">
     <h1>Conduit - A Blogging App</h1>
 
-[Live Demo Link](https://conduit-udit.herokuapp.com/)
-
 </div>
 
 <!-- Banner -->
